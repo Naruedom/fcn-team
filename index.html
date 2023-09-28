@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            background-color: #c8d6e9;
+        }
+
+        .css-tj4uv7 {
+            width: 32px;
+            height: 32px;
+            box-sizing: content-box;
+            border: 1px solid rgb(67, 74, 97);
+            border-radius: 50rem;
+            position: relative;
+        }
+
+        .css-b2ohrm {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            position: relative;
+            user-select: none;
+        }
+
+        .css-1gcv3qi {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            background-color: rgb(34, 34, 34);
+        }
+
+        .css-ani-1 {
+            object-fit: cover;
+            object-position: -417px -18px;
+            width: 100%;
+            height: 200%;
+            image-rendering: pixelated;
+            transform: scale(1.25);
+        }
+
+        .css-ani-2 {
+            object-fit: cover;
+            object-position: -384px -18px;
+            width: 100%;
+            height: 200%;
+            image-rendering: pixelated;
+            transform: scale(1.25);
+        }
+
+        .css-k3k3gd {
+            object-fit: cover;
+            object-position: 0px -18px;
+            width: 100%;
+            height: 200%;
+            image-rendering: pixelated;
+            transform: scale(1.25);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="row justify-content-center p-2">
+
+            <div class="col-12 mb-3 text-right">
+                <button class="btn btn-primary" @click="submit" :disabled="loading">Random Team</button>
+            </div>
+            <div class="col-7">
+
+                <div class="row">
+                    <div class="col-6">
+
+
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-4 text-secondary text-center">name</div>
+                            <div class="col-3 text-secondary text-center">key</div>
+                            <div class="col-2"></div>
+                        </div>
+                        <div class="row mt-2 justify-content-center-x" v-for="(input,k) in inputs" :key="k">
+
+                            <div class="col-1">
+                                <div size="32" class="css-tj4uv7">
+                                    <div size="32" class="css-b2ohrm">
+                                        <div class="css-1gcv3qi">
+                                            <img size="32" :src="input.img" class="css-k3k3gd">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4">
+                                <input type="text" class="form-control" v-model="input.name" placeholder="name">
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control" v-model="input.status" placeholder="">
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-sm mt-1 px-3 fas fa-minus-circle btn-danger"
+                                    @click="remove(k)" v-show="k || ( !k && inputs.length > 1)">x</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center-x mb-3">
+                            <div class="col-8 mt-2">
+                                <button type="button" class="btn btn-sm btn-block fas fa-plus-circle btn-primary"
+                                    @click="add()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-4 text-secondary text-center">name</div>
+                            <div class="col-3 text-secondary text-center">key</div>
+                            <div class="col-2"></div>
+                        </div>
+                        <div class="row mt-2 justify-content-center-x" v-for="(input2,k) in inputs2" :key="k">
+                            <div class="col-1">
+                                <div size="32" class="css-tj4uv7">
+                                    <div size="32" class="css-b2ohrm">
+                                        <div class="css-1gcv3qi">
+                                            <img size="32" :src="input2.img" class="css-k3k3gd">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" v-model="input2.name" placeholder="name">
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="form-control" v-model="input2.status" placeholder="">
+                            </div>
+                            <div class="col-2">
+                                <button type="button" class="btn btn-sm mt-1 px-3 fas fa-minus-circle btn-danger"
+                                    @click="remove2(k)" v-show="k || ( !k && inputs2.length > 1)">x</button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center-x">
+                            <div class="col-8 mt-2">
+                                <button type="button" class="btn btn-sm btn-block fas fa-plus-circle btn-primary"
+                                    @click="add2()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-4">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row text-warning">
+                            <div class="col-12 h5">Team A</div>
+                            <div class="col-12">
+                                <ul class="list-group mb-1" v-for="(t1,k) in team1" :key="k">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <span>{{k+1}}.</span>
+                                            <span>{{t1.name}}</span>
+                                            <span class="badge bg-secondary text-white ml-2">{{t1.status}}</span>
+                                        </div>
+
+                                        <div size="32" class="css-tj4uv7">
+                                            <div size="32" class="css-b2ohrm">
+                                                <div class="css-1gcv3qi">
+                                                    <img size="32" :src="t1.img" :class="ani?'css-ani-1':'css-ani-2'">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="row text-success">
+                            <div class="col-12 h5">Team B</div>
+                            <div class="col-12">
+                                <ul class="list-group mb-1" v-for="(t2,k) in team2" :key="k">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <span>{{k+1}}.</span>
+                                            <span>{{t2.name}}</span>
+                                            <span class="badge bg-secondary text-white ml-2">{{t2.status}}</span>
+                                        </div>
+
+                                        <div size="32" class="css-tj4uv7">
+                                            <div size="32" class="css-b2ohrm">
+                                                <div class="css-1gcv3qi">
+                                                    <img size="32" :src="t2.img" :class="ani?'css-ani-1':'css-ani-2'">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row text-warning">
+                            <div class="col-12 h5"></div>
+                            <div class="col-12">
+                                <ul class="list-group mb-1" v-for="(t1,k) in inputs2" :key="k">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <span>{{k+1}}.</span>
+                                            <span>{{t1.name}}</span>
+                                            <span class="badge bg-secondary text-white ml-2">{{t1.status}}</span>
+                                        </div>
+
+                                        <div size="32" class="css-tj4uv7">
+                                            <div size="32" class="css-b2ohrm">
+                                                <div class="css-1gcv3qi">
+                                                    <img size="32" :src="t1.img" class="css-k3k3gd"
+                                                        :class="ani?'css-ani-1':'css-ani-2'">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data() {
+                return {
+                    inputs: [
+                        { name: 'Jom', status: 'H', img: 'https://dynamic-assets.gather.town/sprite/avatar-dQCYs4n7O99ksXuBIe33.z3y0nUr4eDNKtW90WqEl.Thh1O95hOZKq4yyTmVQD.C7IFji7TQ01jYMgDzX4q.fUQOWRmz98H5GQ9Nfjzk.png?d=.' },
+                        { name: 'Tik', status: 'H', img: 'https://dynamic-assets.gather.town/sprite/avatar-TpKfplxb054casXUGp8Y.dQCYs4n7O99ksXuBIe33.xpK3Fk6qh2MemlexMHzE.Thh1O95hOZKq4yyTmVQD.df2kab24VAUpIvzfOX2f.nxznoKKe5eI2XLkrhU8T.WgWLWiyACz0UOMvJKDD6.png?d=.' },
+                        { name: 'Kay', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-wXuT847sAiTefWVEhhME.R7cVd1GzcUu4CbnXHAWe.8IxYJmX9KwGUNSKpnJ5L.Thh1O95hOZKq4yyTmVQD.XmbLJU4OdldLoSo6PZtS.7SqoR7WLWniXx6OMI9Gv.RnPGrbCAK84rwkCpUDEy.sXPhqmBzvcFxYo3K2DoE.png?d=.' },
+                        { name: 'Tom', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-8hCSfYIK6RvpToNgMJNB.igRBasdJCxtfIyNetCfx.DAW8N71PAC2NID2Gv0CZ.POxZxDJhhmrS3MyzJlkO.rri3zCmfIf4KGyIDCorI.Hqqwvfr7zQCiVS5QknmA.png?d=.' },
+                        { name: 'M', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-R7cVd1GzcUu4CbnXHAWe.igRBasdJCxtfIyNetCfx.Thh1O95hOZKq4yyTmVQD.GQMCBA5ww1xgkEcqsmtU.jrBSq0OXj2dkknwlT682.png?d=.' },
+                        { name: 'J', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-dQCYs4n7O99ksXuBIe33.by2Yue7N962bdh8FlMVY.Thh1O95hOZKq4yyTmVQD.sL5ZQi1npBXrmDFGtFH8.Xxul36UoP9InVZH16rjx.png?d=.' },
+                        { name: 'Princess Thor', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-C0ykfrlDx7AkQsLyLcNS.niZakNMqRJzokDrEhSSV.Thh1O95hOZKq4yyTmVQD.IjVvVq00FtHl8BEpT0AJ.g483WRldPrpq2XoOAEhe.WNOpjuplVHbbxvjVy5Lf.png?d=.' },
+                        { name: 'Mhiew', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-vng7aC5F55azm19LCZMQ.C0ykfrlDx7AkQsLyLcNS.6AczIj4OgrICPerAqTzg.Thh1O95hOZKq4yyTmVQD.lXbNHIzZNST5e62lr0uo.81LvUrAIWY9Vvo9pxW7f.png?d=.' },
+                        { name: 'Draft', status: '', img: 'https://dynamic-assets.gather.town/sprite/avatar-R7cVd1GzcUu4CbnXHAWe.6AczIj4OgrICPerAqTzg.Thh1O95hOZKq4yyTmVQD.agEvFKFD4Ta3MQ09ENbU.HsFgDtjnu6DbmyfWERee.png?d=.' },
+                        //{ name: 'Poom', status: 'N', img: 'https://dynamic-assets.gather.town/sprite/avatar-9m3qVgHfBsdmFN5EuagD-52UR2uCjJmKsRXTA3AfY-XCbGQSHjSfo6nXKMhHHO-0X58b0VSHxe9wmwh8Qxa-cdDYitoN4tMitFzD4kdW-D7Bk8qHiLC9XMixzYqAf.png' },
+                        // { name: 'Beer', status: 'Test', img: 'https://dynamic-assets.gather.town/sprite/avatar-dQCYs4n7O99ksXuBIe33-yVns5MkEGViqXmkdnbdO-yFpcQh7UcvdChVN8WvIW-8KfEH5qXVJ0FK9TGHWHC-TXeWcrsDl0m6YWwSf09c.png' },
+                        //{ name: 'Pam', status: 'Test', img: 'https://dynamic-assets.gather.town/sprite/avatar-MbljMaIGTtzzOpas7zVd-QoPCoTqKhAur8mRn2DqA-KqTqvfFl86GbTsCRv5AY-JjnPu5yLpbLrEvbcvyaH-I7vkRzijl8vBGm5LRwQT-QlELYHdF8KiU4HByyqFq-lfOdc20ozxM1lW3Z8z1l-B5eKIY8CdY4OQvoBBHDz.png' },
+                    ],
+                    team1: [],
+                    team2: [],
+                    loading: false,
+
+                    inputs2: [
+                        // { name: 'Golf', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-dQCYs4n7O99ksXuBIe33-euu8DCnRdd0cxvZdLtFY-yFpcQh7UcvdChVN8WvIW-FoK9agg9VS8f2SAaRcBm-lhddQkCrQxpf1ybkz0ku-SAIUScFD3QLYYfmhzHRl-7EyjSDVlNscTAlYLSHV1.png' },
+
+                        // { name: 'Kukkai', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-QoPCoTqKhAur8mRn2DqA-C0ykfrlDx7AkQsLyLcNS-K4vXEi6kAScoL4rj101T-yFpcQh7UcvdChVN8WvIW-nsVVG8qtrLtkpWtGPz5o-lfOdc20ozxM1lW3Z8z1l-IoWoszeOyAMV0iWLcRWj.png' },
+                        // { name: 'O', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-KqTqvfFl86GbTsCRv5AY-7zJ0QmraQS9GAldP9hrk-Thh1O95hOZKq4yyTmVQD-agEvFKFD4Ta3MQ09ENbU-o6W4ZrvUKaFKul3pIch8.png' },
+
+                        { name: 'Beer', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-egQLKXLotk1sj0mfi8TT.Lx0Zpepm3KMUYFYvdNJ1.Kz1iNefTjXoECb9QTyzc.AR3nQpVwpqNLvsY61htE.bB5h5FrSegfQqOG443mU.png?d=.' },
+
+                        // { name: 'Tong', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-wKYYwOsy6WYZWiqV4ov1.png?d=.' },   
+
+                        { name: 'Phuang', status: 'Tester', img: 'https://dynamic-assets.gather.town/sprite/avatar-egQLKXLotk1sj0mfi8TT.Lx0Zpepm3KMUYFYvdNJ1.Kz1iNefTjXoECb9QTyzc.AR3nQpVwpqNLvsY61htE.bB5h5FrSegfQqOG443mU.png?d=.' },
+
+                    ],
+
+                    ani: 0,
+                }
+            },
+
+            mounted: function () {
+                this.startAni();
+            },
+
+            methods: {
+
+                startAni() {
+                    setInterval(() => {
+                        this.ani = this.ani ? 0 : 1;
+                    }, 250);
+                },
+
+                add() {
+                    this.inputs.push({ name: '', status: '' })
+                },
+
+                remove(index) {
+                    this.inputs.splice(index, 1)
+                },
+
+                add2() {
+                    this.inputs2.push({ name: '', status: '' })
+                },
+
+                remove2(index) {
+                    this.inputs2.splice(index, 1)
+                },
+
+                submit() {
+                    this.loading = true;
+                    for (let i = 4000; i >= 1; i--) {
+                        setTimeout(() => {
+                            this.random();
+                            if (i <= 1)
+                                this.loading = false;
+                        }, 10);
+                    }
+                },
+
+                random() {
+                    let members = [...this.inputs].sort(() => Math.random() - 0.5)
+                    // let nList = members.filter(n => !n.status);
+                    let team1 = [];
+                    let team2 = [];
+
+                    for (let i = 0; i < members.length; i++) {
+
+                        let member = members[i];
+                        let check1 = team1.filter(m => m.status == member.status);
+                        let check2 = team2.filter(m => m.status == member.status);
+
+                        if (check1.length <= check2.length)
+                            team1.push(member);
+                        else
+                            team2.push(member);
+                    }
+
+                    this.team1 = team1;
+                    this.team2 = team2;
+
+                },
+            }
+        });
+
+        // บั๊กไม่มี บารมีไม่เกิด 😎
+    </script>
+</body>
+
+</html>
